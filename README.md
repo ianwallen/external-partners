@@ -3,7 +3,7 @@ To install and run GeoNetwork with its integrated Elasticsearch using Docker Com
 •	Initialize a new repository on GitHub to host your GeoNetwork setup.
 2. Clone the Repository Locally (Optional):
 •	If you prefer local setup before pushing to GitHub: 
-•	git clone https://github.com/your-username/your-repository.git
+•	git clone https://github.com/your-username/your-repository.git 
 •	cd your-repository
 3. Add GeoNetwork Docker Configuration:
 •	Download the necessary Docker Compose files from the official GeoNetwork repository: 
