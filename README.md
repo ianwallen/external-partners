@@ -6,21 +6,31 @@ To install and run GeoNetwork with its integrated Elasticsearch using Docker Com
 3. Clone the Repository Locally (Optional):
    
 •	If you prefer local setup before pushing to GitHub:
+
 •	git clone https://github.com/your-username/your-repository.git 
+
 •	cd your-repository
+
 
 5. Add GeoNetwork Docker Configuration:
    
 •	Download the necessary Docker Compose files from the official GeoNetwork repository:
+
 •	git clone https://github.com/geonetwork/docker-geonetwork.git
+
 •	Navigate to the appropriate version directory (e.g., 4.0.x) and copy its contents into your repository:
+
 •	cp -r docker-geonetwork/4.0.x/* your-repository/
+
 •	Ensure the docker-compose.yml file includes services for GeoNetwork, Elasticsearch, PostgreSQL with PostGIS, and Kibana. An example configuration is available in the GeoNetwork documentation. citeturn0search2
+
 
 7. Configure GitHub Codespaces:
    
 •	In your repository's root directory, create a .devcontainer folder.
+
 •	Inside .devcontainer, create a devcontainer.json file with the following content:
+
 
 	{
 	  "name": "GeoNetwork Development",
@@ -40,30 +50,44 @@ This configuration specifies that Codespaces should use the services defined in 
 6. Commit and Push Changes:
    
 •	Stage and commit your changes:
+
 •	git add .
+
 •	git commit -m "Add GeoNetwork Docker setup with Codespaces configuration"
+
 •	Push to your GitHub repository:
+
 •	git push origin main
+
 
 8. Launch GitHub Codespace:
    
 •	Navigate to your repository on GitHub.
+
 •	Click the "Code" button and select the "Codespaces" tab.
+
 •	Click "Create codespace on main" to initiate a new Codespace.
+
 
 10. Build and Start Services:
     
 •	Once the Codespace environment is ready, open a terminal within Codespaces.
+
 •	Run the following command to build and start the services:
+
 •	docker-compose up --build
+
 
 This command builds the Docker images and starts the containers as defined in your docker-compose.yml file.
 
 12. Access GeoNetwork Interface:
     
 •	After the services are running, forward the appropriate port to access GeoNetwork.
+
 •	In the Codespaces interface, navigate to the "Ports" tab, locate the port on which GeoNetwork is running (typically 8080), and click "Open in Browser."
+
 •	You should now see the GeoNetwork interface.
+
 
 By following these steps, you've set up GeoNetwork with its integrated Elasticsearch using Docker Compose within a GitHub Codespace.
 
