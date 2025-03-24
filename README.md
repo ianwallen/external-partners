@@ -91,5 +91,3 @@ This command builds the Docker images and starts the containers as defined in yo
 
 By following these steps, you've set up GeoNetwork with its integrated Elasticsearch using Docker Compose within a GitHub Codespace.
 
-Look under the codespaces "ports" tab to find the URL for port 8080.   
-
