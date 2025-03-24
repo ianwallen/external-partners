@@ -22,7 +22,7 @@ To install and run GeoNetwork with its integrated Elasticsearch using Docker Com
 
 •	cp -r docker-geonetwork/4.0.x/* your-repository/
 
-•	Ensure the docker-compose.yml file includes services for GeoNetwork, Elasticsearch, PostgreSQL with PostGIS, and Kibana. An example configuration is available in the GeoNetwork documentation. citeturn0search2
+•	Ensure the docker-compose.yml file includes services for GeoNetwork, Elasticsearch, PostgreSQL with PostGIS, and Kibana. An example configuration is available in the GeoNetwork documentation. 
 
 
 4. Configure GitHub Codespaces:
