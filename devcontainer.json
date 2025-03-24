@@ -1,0 +1,12 @@
+{
+  "name": "GeoNetwork Development",
+  "dockerComposeFile": "docker-compose.yml",
+  "service": "geonetwork",
+  "workspaceFolder": "/workspace",
+  "settings": {
+    "terminal.integrated.defaultProfile.linux": "/bin/bash"
+  },
+  "extensions": [
+    "ms-azuretools.vscode-docker"
+  ]
+}
