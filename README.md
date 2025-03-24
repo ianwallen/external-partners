@@ -12,20 +12,20 @@ To install and run GeoNetwork with its integrated Elasticsearch using Docker Com
 •	cp -r docker-geonetwork/4.0.x/* your-repository/
 •	Ensure the docker-compose.yml file includes services for GeoNetwork, Elasticsearch, PostgreSQL with PostGIS, and Kibana. An example configuration is available in the GeoNetwork documentation. citeturn0search2
 4. Configure GitHub Codespaces:
-•	In your repository's root directory, create a .devcontainer folder.
+•	In your repository's root directory, create a .devcontainer folder.
 •	Inside .devcontainer, create a devcontainer.json file with the following content: 
-•	{
-•	  "name": "GeoNetwork Development",
-•	  "dockerComposeFile": "docker-compose.yml",
-•	  "service": "geonetwork",
-•	  "workspaceFolder": "/workspace",
-•	  "settings": {
-•	    "terminal.integrated.defaultProfile.linux": "/bin/bash"
-•	  },
-•	  "extensions": [
-•	    "ms-azuretools.vscode-docker"
-•	  ]
-•	}
+	{
+	  "name": "GeoNetwork Development",
+	  "dockerComposeFile": "docker-compose.yml",
+	  "service": "geonetwork",
+	  "workspaceFolder": "/workspace",
+	  "settings": {
+	    "terminal.integrated.defaultProfile.linux": "/bin/bash"
+	  },
+	  "extensions": [
+	    "ms-azuretools.vscode-docker"
+	  ]
+	}
 This configuration specifies that Codespaces should use the services defined in your docker-compose.yml file, focusing on the geonetwork service.
 5. Commit and Push Changes:
 •	Stage and commit your changes: 
