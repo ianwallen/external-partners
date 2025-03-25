@@ -1,5 +1,5 @@
 To install and run GeoNetwork with its integrated Elasticsearch using Docker Compose on GitHub Codespaces, follow these detailed steps:
-1. Create a GitHub Repository:
+#1. Create a GitHub Repository:
    
 •	Initialize a new repository on GitHub to host your GeoNetwork setup.
 
