@@ -1,9 +1,10 @@
-To install and run GeoNetwork with its integrated Elasticsearch using Docker Compose on GitHub Codespaces, follow these detailed steps:
+To install and run GeoNetwork with its integrated Elasticsearch using Docker Compose on GitHub Codespaces, follow these steps:
+
 # 1. Create a GitHub Repository:
    
 •	Initialize a new repository on GitHub to host your GeoNetwork setup.
 
-2. Clone the Repository Locally (Optional):
+# 2. Clone the Repository Locally (Optional):
    
 •	If you prefer local setup before pushing to GitHub:
 
@@ -12,7 +13,7 @@ To install and run GeoNetwork with its integrated Elasticsearch using Docker Com
 •	cd your-repository
 
 
-3. Add GeoNetwork Docker Configuration:
+# 3. Add GeoNetwork Docker Configuration:
    
 •	Download the necessary Docker Compose files from the official GeoNetwork repository:
 
@@ -25,7 +26,7 @@ To install and run GeoNetwork with its integrated Elasticsearch using Docker Com
 •	Ensure the docker-compose.yml file includes services for GeoNetwork, Elasticsearch, PostgreSQL with PostGIS, and Kibana. An example configuration is available in the GeoNetwork documentation. 
 
 
-4. Configure GitHub Codespaces:
+# 4. Configure GitHub Codespaces:
    
 •	In your repository's root directory, create a .devcontainer folder.
 
@@ -47,7 +48,7 @@ To install and run GeoNetwork with its integrated Elasticsearch using Docker Com
 
 This configuration specifies that Codespaces should use the services defined in your docker-compose.yml file, focusing on the geonetwork service.
 
-5. Commit and Push Changes:
+# 5. Commit and Push Changes:
    
 •	Stage and commit your changes:
 
@@ -60,7 +61,7 @@ This configuration specifies that Codespaces should use the services defined in 
 •	git push origin main
 
 
-6. Launch GitHub Codespace:
+# 6. Launch GitHub Codespace:
    
 •	Navigate to your repository on GitHub.
 
@@ -69,7 +70,7 @@ This configuration specifies that Codespaces should use the services defined in 
 •	Click "Create codespace on main" to initiate a new Codespace.
 
 
-7. Build and Start Services:
+# 7. Build and Start Services:
     
 •	Once the Codespace environment is ready, open a terminal within Codespaces.
 
@@ -80,7 +81,7 @@ This configuration specifies that Codespaces should use the services defined in 
 
 This command builds the Docker images and starts the containers as defined in your docker-compose.yml file.
 
-8. Access GeoNetwork Interface:
+# 8. Access GeoNetwork Interface:
     
 •	After the services are running, forward the appropriate port to access GeoNetwork.
 
