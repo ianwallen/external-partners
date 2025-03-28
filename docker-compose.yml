@@ -1,6 +1,6 @@
 x-geonetwork-environment:
   &default-geonetwork-environment
-  WEBAPP_CONTEXT_PATH: /geonetwork
+  WEBAPP_CONTEXT_PATH: /
   DATA_DIR: /catalogue-data
   TZ: Europe/Amsterdam
 
@@ -49,11 +49,9 @@ x-service-geonetwork:
     retries: 30
   labels:
     - "traefik.enable=true"
-    - "traefik.http.routers.geonetwork.middlewares=root-redirect"
-    - "traefik.http.middlewares.root-redirect.replacepathregex.regex=^/$$"
-    - "traefik.http.middlewares.root-redirect.replacepathregex.replacement=/geonetwork/"
     - "traefik.http.routers.geonetwork.rule=Host(`geonetwork.localhost`)"
     - "traefik.http.routers.geonetwork.entrypoints=web"
+    - "traefik.http.routers.geonetwork.service=geonetwork"
     - "traefik.http.services.geonetwork.loadbalancer.server.port=8080"
     - "traefik.http.services.geonetwork.loadbalancer.sticky=true"
     - "traefik.http.services.geonetwork.loadbalancer.sticky.cookie.name=gnstickycookie"
@@ -132,6 +130,16 @@ services:
       << : *default-geonetwork-environment
       HARVESTER_SCHEDULER_ENABLED: "true"
       HARVESTER_REFRESH_INTERVAL_MINUTES: 2
+      GN_AUTH_KEYCLOAK_ENABLED: "true"
+      GN_AUTH_KEYCLOAK_CLIENT_ID: "geonetwork-client"
+      GN_AUTH_KEYCLOAK_REALM: "geonetwork-realm"
+      GN_AUTH_KEYCLOAK_URL: "https://solid-space-garbanzo-ppw99vg69p4374j9-8085.app.github.dev/"
+      GN_AUTH_KEYCLOAK_REDIRECT_URI: "http://geonetwork.localhost/saml"
+      GN_AUTH_KEYCLOAK_CLIENT_SECRET: "0aYc9AbtCacISoKIdyne7OAxTv4rxXWU"
+      GN_AUTH_KEYCLOAK_ROLE_CLAIM: "roles"
+      GN_AUTH_KEYCLOAK_GROUPS_CLAIM: "groups"
+      GN_AUTH_KEYCLOAK_USERNAME_CLAIM: "preferred_username"
+      GN_AUTH_KEYCLOAK_EMAIL_CLAIM: "email"
     ports:
       - 8080:8080
 
