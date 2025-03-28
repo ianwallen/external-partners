@@ -74,12 +74,11 @@ volumes:
   pgdata:
   pglog:
   traefiklog:
-
-
+  db-data:
+  
 networks:
   gn-network:
     driver: bridge
-
 
 services:
   traefik:
@@ -104,7 +103,6 @@ services:
     networks:
       - gn-network
 
-
   database:
     image: postgis/postgis:11-2.5
     environment:
@@ -128,7 +126,6 @@ services:
     networks:
       - gn-network
 
-
   geonetwork:
     <<: *default-service-geonetwork
     environment:
@@ -137,7 +134,6 @@ services:
       HARVESTER_REFRESH_INTERVAL_MINUTES: 2
     ports:
       - 8080:8080
-
 
   # docker-compose --profile scaled up --scale geonetwork-replica=2 -d
   geonetwork-replica:
@@ -152,7 +148,6 @@ services:
       replicas: 1
     ports:
       - "8081-8082:8080"
-
 
   ogc-api-records-service:
     image: geonetwork/gn-cloud-ogc-api-records-service:4.4.3-0
@@ -176,7 +171,6 @@ services:
          condition: service_healthy
     networks:
       - gn-network
-
 
   elasticsearch:
     image: elasticsearch:8.14.3
@@ -219,11 +213,35 @@ services:
         condition: service_healthy
     networks:
       - gn-network
+ 
+  db:
+    image: postgres:13
+    environment:
+      POSTGRES_USER: keycloak
+      POSTGRES_PASSWORD: password
+      POSTGRES_DB: keycloak
+    volumes:
+      - db-data:/var/lib/postgresql/data
+    ports:
+      - 5432:5432 #optional, only if you want to access the db directly from your host.
+
+  keycloak:
+    image: quay.io/keycloak/keycloak:latest
+    command: start-dev --import-realm
+    environment:
+      KEYCLOAK_ADMIN: admin
+      KEYCLOAK_ADMIN_PASSWORD: admin
+      KC_DB: postgres
+      KC_DB_URL: jdbc:postgresql://db/keycloak
+      KC_DB_USERNAME: keycloak
+      KC_DB_PASSWORD: password
+      KC_HTTP_PORT: 8085
+      KC_HOSTNAME: https://solid-space-garbanzo-ppw99vg69p4374j9-8085.app.github.dev/
+    ports:
+      - 8085:8085
+    depends_on:
+      - db
+    volumes:
+      - ./realm-export.json:/opt/keycloak/data/import/realm-export.json #optional, for realm imports.
 
 
-#  translation:
-#    image: libretranslate/libretranslate
-#    ports:
-#      - 5000:5000
-#    networks:
-#      - gn-network
