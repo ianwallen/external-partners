@@ -56,8 +56,12 @@ x-service-geonetwork:
     - "traefik.http.services.geonetwork.loadbalancer.sticky.cookie.secure=false"
     - "traefik.http.services.geonetwork.loadbalancer.sticky.cookie.httpOnly=true"
   restart: always
+  user: root
   volumes:
     - geonetwork:/catalogue-data
+    - ./geonetwork-data:/catalogue-data
+    - ./pgdata:/var/lib/postgresql/data
+    - ./esdata:/usr/share/elasticsearch/data
   depends_on:
     database:
       condition: service_healthy
