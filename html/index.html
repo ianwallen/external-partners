@@ -1,0 +1,106 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Your Science Portal</title>
+  <style>
+    body {
+      font-family: 'Arial', sans-serif;
+      margin: 0;
+      padding: 0;
+      background-color: #e3f2fd; /* Light sky blue */
+      color: #333;
+    }
+    header {
+      background-color: #388e3c; /* Forest Green */
+      color: white;
+      padding: 40px;
+      text-align: center;
+      background-image: url('https://images.unsplash.com/photo-1501594907350-1d8a325682ab'); /* Canadian Nature Image */
+      background-size: cover;
+      background-position: center;
+      border-bottom: 4px solid #fbc02d; /* Yellow Accent */
+    }
+    header h1 {
+      font-size: 3rem;
+      text-shadow: 3px 3px 5px rgba(0, 0, 0, 0.5);
+    }
+    header p {
+      font-size: 1.5rem;
+    }
+    .container {
+      padding: 40px;
+      text-align: center;
+    }
+    a {
+      display: block;
+      margin: 20px 0;
+      padding: 15px;
+      background-color: #ff9800; /* Outdoor Orange */
+      color: white;
+      text-decoration: none;
+      border-radius: 10px;
+      width: 250px;
+      margin-left: auto;
+      margin-right: auto;
+      text-align: center;
+      font-size: 1.2rem;
+      box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
+    }
+    a:hover {
+      background-color: #f57c00; /* Darker Orange */
+      transform: scale(1.05);
+    }
+    .icon {
+      font-size: 2rem;
+      margin-right: 10px;
+    }
+    footer {
+      text-align: center;
+      padding: 20px;
+      background-color: #388e3c;
+      color: white;
+    }
+    footer a {
+      color: #ffffff;
+      text-decoration: none;
+    }
+  </style>
+  <!-- Link to outdoor icons -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css">
+</head>
+<body>
+
+<header>
+  <h1>Explore the Outdoors and Science</h1>
+  <p>Your gateway to Hiking, Biking, and Science Data</p>
+</header>
+
+<div class="container">
+  <h2>Adventure Awaits</h2>
+
+  <!-- Link to GeoNetwork with Hiking icon -->
+  <a href="https://solid-space-garbanzo-ppw99vg69p4374j9-8080.app.github.dev/" target="_blank">
+    <i class="fas fa-mountain icon"></i> Hiking Trails 
+  </a>
+  
+  <!-- Link to CSW Viewer API with Bike icon -->
+  <a href="https://api-proxy-dev.edh-cde.unclass.dfo-mpo.gc.ca/edh/cswviewer" target="_blank">
+    <i class="fas fa-bicycle icon"></i> Our Partner's Catalogue
+  </a>
+  
+  <!-- Additional link with hiking icon -->
+  <a href="https://www.hikingproject.com/" target="_blank">
+    <i class="fas fa-hiking icon"></i> Science Publications
+  </a>
+
+</div>
+
+<footer>
+  <p>Powered by EDH</p>
+  <p><a href="https://ncc-ccn.gc.ca/places/gatineau-park-trails-map" target="_blank">Learn More About Trails</a></p>
+</footer>
+
+</body>
+</html>

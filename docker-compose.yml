@@ -69,22 +69,55 @@ x-service-geonetwork:
     - gn-network
 
 services:
+
   nginx:
-    image: nginx:latest
-    container_name: nginx
+    image: nginx:alpine
+    container_name: science-portal
+    ports:
+      - "8082:80"
+    volumes:
+      - ./html:/usr/share/nginx/html:ro  # Serve your HTML file
+    labels:
+      - "traefik.enable=true"
+      - "traefik.http.routers.science-portal.rule=PathPrefix(`/portal`)"  # Traefik route
+      - "traefik.http.routers.science-portal.entrypoints=websecure"
+      - "traefik.http.services.science-portal-service.loadbalancer.server.port=80"  # Expose port 80
+    networks:
+      - web
+
+  traefik:
+    image: "traefik:v2.10"
+    container_name: "traefik"
+    command:
+      - "--log.filePath=/logs/traefik.log"
+      - "--accesslog=true"
+      - "--accesslog.bufferingsize=50"
+      - "--accesslog.filePath=/logs/access.log"
+      - "--api.insecure=true"
+      - "--providers.docker=true"
+      - "--providers.docker.exposedbydefault=false"
+      - "--entrypoints.websecure.address=:8081"
+      - "--log.level=DEBUG"
+      - "--entrypoints.web.address=:80"
+      - "--entrypoints.websecure.address=:443"
+      - "--providers.docker=true"
+      - "--providers.docker.exposedbydefault=false"
     ports:
       - "80:80"
-      - "443:443"  # Optional, if you want to serve HTTPS
-      - "8082:8082"
+      - "443:443"
+      - "8081:8081"
+      - "8000:8080"
     volumes:
-      - ./nginx.conf:/etc/nginx/nginx.conf
-      - ./research-portal:/usr/share/nginx/html/research-portal  # Mount research-portal folder
-      - ./ssl:/etc/nginx/ssl  # Optional, for SSL certificates
-    depends_on:
-      - geonetwork
-      - ogc-api-records-service
+      - "/var/run/docker.sock:/var/run/docker.sock:ro"
+      - traefiklog:/logs
     networks:
       - gn-network
+      - web
+    labels:
+      - "traefik.http.routers.research-portal.rule=PathPrefix(`/portal`)"
+      - "traefik.http.routers.research-portal.entrypoints=websecure"
+      - "traefik.http.routers.research-portal.service=research-portal-service"
+      - "traefik.http.services.research-portal-service.loadbalancer.server.port=8082" # Changed to 8082
 
   database:
     image: postgis/postgis:11-2.5
@@ -255,3 +288,5 @@ volumes:
 networks:
   gn-network:
     driver: bridge
+  web:
+    external: true 
