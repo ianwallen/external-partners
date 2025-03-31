@@ -1,4 +1,4 @@
-version: "3.8"
+
 name: gn
 
 x-geonetwork-environment:
@@ -58,7 +58,7 @@ x-service-geonetwork:
   restart: always
   user: root
   volumes:
-    - geonetwork:/catalogue-data
+   # - geonetwork:/catalogue-data
     - ./geonetwork-data:/catalogue-data
     - ./pgdata:/var/lib/postgresql/data
     - ./esdata:/usr/share/elasticsearch/data
