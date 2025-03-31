@@ -69,6 +69,22 @@ x-service-geonetwork:
     - gn-network
 
 services:
+
+  nginx:
+    image: nginx:alpine
+    container_name: science-portal
+    ports:
+      - "8082:80"
+    volumes:
+      - ./html:/usr/share/nginx/html:ro  # Serve your HTML file
+    labels:
+      - "traefik.enable=true"
+      - "traefik.http.routers.science-portal.rule=PathPrefix(`/portal`)"  # Traefik route
+      - "traefik.http.routers.science-portal.entrypoints=websecure"
+      - "traefik.http.services.science-portal-service.loadbalancer.server.port=80"  # Expose port 80
+    networks:
+      - web
+
   traefik:
     image: "traefik:v2.10"
     container_name: "traefik"
@@ -81,7 +97,14 @@ services:
       - "--providers.docker=true"
       - "--providers.docker.exposedbydefault=false"
       - "--entrypoints.websecure.address=:8081"
+      - "--log.level=DEBUG"
+      - "--entrypoints.web.address=:80"
+      - "--entrypoints.websecure.address=:443"
+      - "--providers.docker=true"
+      - "--providers.docker.exposedbydefault=false"
     ports:
+      - "80:80"
+      - "443:443"
       - "8081:8081"
       - "8000:8080"
     volumes:
@@ -89,6 +112,7 @@ services:
       - traefiklog:/logs
     networks:
       - gn-network
+      - web
     labels:
       - "traefik.http.routers.research-portal.rule=PathPrefix(`/portal`)"
       - "traefik.http.routers.research-portal.entrypoints=websecure"
@@ -264,3 +288,5 @@ volumes:
 networks:
   gn-network:
     driver: bridge
+  web:
+    external: true 
