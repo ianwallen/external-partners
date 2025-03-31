@@ -69,20 +69,31 @@ x-service-geonetwork:
     - gn-network
 
 services:
-  nginx:
-    image: nginx:latest
-    container_name: nginx
+  traefik:
+    image: "traefik:v2.10"
+    container_name: "traefik"
+    command:
+      - "--log.filePath=/logs/traefik.log"
+      - "--accesslog=true"
+      - "--accesslog.bufferingsize=50"
+      - "--accesslog.filePath=/logs/access.log"
+      - "--api.insecure=true"
+      - "--providers.docker=true"
+      - "--providers.docker.exposedbydefault=false"
+      - "--entrypoints.websecure.address=:8081"
     ports:
-      - "80:80"
-      - "443:443"  # Optional, if you want to serve HTTPS
+      - "8081:8081"
+      - "8000:8080"
     volumes:
-      - ./nginx.conf:/etc/nginx/nginx.conf
-      - ./ssl:/etc/nginx/ssl  # Optional, for SSL certificates
-    depends_on:
-      - geonetwork
-      - ogc-api-records-service
+      - "/var/run/docker.sock:/var/run/docker.sock:ro"
+      - traefiklog:/logs
     networks:
       - gn-network
+    labels:
+      - "traefik.http.routers.research-portal.rule=PathPrefix(`/portal`)"
+      - "traefik.http.routers.research-portal.entrypoints=websecure"
+      - "traefik.http.routers.research-portal.service=research-portal-service"
+      - "traefik.http.services.research-portal-service.loadbalancer.server.port=8082" # Changed to 8082
 
   database:
     image: postgis/postgis:11-2.5

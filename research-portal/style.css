@@ -1,46 +1,91 @@
+/* General body styling */
 body {
-    font-family: sans-serif;
+    font-family: 'Roboto', sans-serif;
     margin: 0;
     padding: 0;
-    background-color: #f4f4f4;
+    background-color: #f5f5f5;
+    background-image: url('images/mountain-bg.jpg');
+    background-size: cover;
+    background-position: center;
+    color: #333;
+    line-height: 1.6;
+    height: 100vh; /* Ensure body takes full viewport height */
+    display: flex;
+    justify-content: center;  /* Horizontally center */
+    align-items: center;  /* Vertically center */
 }
 
-header {
-    background-color: #007bff;
-    color: white;
-    text-align: center;
-    padding: 1em 0;
-}
-
+/* Main content area */
 main {
-    width: 80%;
-    margin: 20px auto;
+    width: 90%;
+    max-width: 1200px;
+    background-color: rgba(255, 255, 255, 0.85);
+    padding: 30px;
+    border-radius: 12px;
+    box-shadow: 0 6px 18px rgba(0, 0, 0, 0.1);
+    transition: all 0.3s ease;
+    display: flex;
+    flex-direction: column;
+    align-items: center;  /* Center content horizontally within main */
+    justify-content: center;  /* Center content vertically within main */
+    text-align: center;
 }
 
-section {
-    background-color: white;
-    padding: 20px;
+main:hover {
+    box-shadow: 0 12px 30px rgba(0, 0, 0, 0.2);
+}
+
+/* Welcome Section */
+.welcome h2 {
+    font-size: 2.5em;
+    color: #007bff;  /* Blue */
+    margin-bottom: 10px;
+}
+
+.welcome p {
+    font-size: 1.2em;
+    color: #555;
+    margin-top: 0;
+}
+
+/* Quick Links Section */
+.links h2 {
+    font-size: 2em;
     margin-bottom: 20px;
-    border-radius: 5px;
-    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
 }
 
 .links ul {
     list-style: none;
     padding: 0;
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 20px;
+    justify-items: center;
 }
 
 .links li {
-    margin-bottom: 10px;
+    text-align: center;
+    font-size: 1.2em;
 }
 
 .links a {
     text-decoration: none;
-    color: #007bff;
+    color: #007bff;  /* Blue */
+    font-weight: 500;
+    font-size: 1.1em;
+    background-color: #f5f5f5;
+    padding: 15px 20px;
+    border-radius: 8px;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+    transition: background-color 0.3s ease, transform 0.3s ease;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 10px; /* Add gap between icon and text */
 }
 
-footer {
-    text-align: center;
-    padding: 1em 0;
-    background-color: #ddd;
+.links a:hover {
+    background-color: #007bff;  /* Blue background on hover */
+    color: white;  /* White text on hover */
+    transform: scale(1.05);
 }
