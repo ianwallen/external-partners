@@ -75,8 +75,10 @@ services:
     ports:
       - "80:80"
       - "443:443"  # Optional, if you want to serve HTTPS
+      - "8082:8082"
     volumes:
       - ./nginx.conf:/etc/nginx/nginx.conf
+      - ./research-portal:/usr/share/nginx/html/research-portal  # Mount research-portal folder
       - ./ssl:/etc/nginx/ssl  # Optional, for SSL certificates
     depends_on:
       - geonetwork
