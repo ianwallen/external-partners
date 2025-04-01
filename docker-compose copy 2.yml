@@ -13,9 +13,6 @@ x-geonetwork-environment:
     -Djetty.httpConfig.requestHeaderSize=32768
     -Dorg.eclipse.jetty.server.Request.maxFormContentSize=500000
     -Dorg.eclipse.jetty.server.Request.maxFormKeys=4000
-    -Dorg.apache.activemq.broker.BrokerService.tempUsage.limit=2gb
-    -Dcom.sun.management.jmxremote=false
-
   GN_CONFIG_PROPERTIES: >-
     -Dgeonetwork.dir=/catalogue-data
     -Dgeonetwork.formatter.dir=/catalogue-data/data/formatter
@@ -65,7 +62,6 @@ x-service-geonetwork:
     - ./geonetwork-data:/catalogue-data
     - ./pgdata:/var/lib/postgresql/data
     - ./esdata:/usr/share/elasticsearch/data
-    - ./activemq-data:/var/lib/jetty/activemq-data 
   depends_on:
     database:
       condition: service_healthy
@@ -159,19 +155,15 @@ services:
       HARVESTER_SCHEDULER_ENABLED: "true"
       HARVESTER_REFRESH_INTERVAL_MINUTES: 2
       GN_AUTH_KEYCLOAK_ENABLED: "true"
-      GN_AUTH_KEYCLOAK_FORCE: "true"
-      GN_AUTH_KEYCLOAK_HIDE_LOGIN_FORM: "true"
       GN_AUTH_KEYCLOAK_CLIENT_ID: "geonetwork-client"
       GN_AUTH_KEYCLOAK_REALM: "geonetwork-realm"
       GN_AUTH_KEYCLOAK_URL: "https://solid-space-garbanzo-ppw99vg69p4374j9-8085.app.github.dev/realms/master/protocol/openid-connect/auth"
-      GN_AUTH_KEYCLOAK_REDIRECT_URI: "https://solid-space-garbanzo-ppw99vg69p4374j9-8080.app.github.dev/geonetwork/j_oauth2_callback"
+      GN_AUTH_KEYCLOAK_REDIRECT_URI: "https://solid-space-garbanzo-ppw99vg69p4374j9-80.app.github.dev/geonetwork/j_oauth2_callback"
       GN_AUTH_KEYCLOAK_CLIENT_SECRET: "B3M9tO29JVSECJeQltwwfOw5CzxAXGQd"
       GN_AUTH_KEYCLOAK_ROLE_CLAIM: "roles"
       GN_AUTH_KEYCLOAK_GROUPS_CLAIM: "groups"
       GN_AUTH_KEYCLOAK_USERNAME_CLAIM: "preferred_username"
       GN_AUTH_KEYCLOAK_EMAIL_CLAIM: "email"
-      GN_AUTH_KEYCLOAK_LOGOUT_REDIRECT_URI: "https://solid-space-garbanzo-ppw99vg69p4374j9-8085.app.github.dev/realms/master/protocol/openid-connect/logout"
-
     ports:
       - 8080:8080
     networks:
@@ -265,8 +257,6 @@ services:
       - db-data:/var/lib/postgresql/data
     ports:
       - 5432:5432 # optional, only if you want to access the db directly from your host.
-    networks:
-      - gn-network
 
   keycloak:
     image: quay.io/keycloak/keycloak:latest
@@ -275,20 +265,17 @@ services:
       KEYCLOAK_ADMIN: admin
       KEYCLOAK_ADMIN_PASSWORD: admin
       KC_DB: postgres
-      KC_DB_URL: jdbc:postgresql://db:5432/keycloak
+      KC_DB_URL: jdbc:postgresql://db/keycloak
       KC_DB_USERNAME: keycloak
       KC_DB_PASSWORD: password
       KC_HTTP_PORT: 8085
       KC_HOSTNAME: https://solid-space-garbanzo-ppw99vg69p4374j9-8085.app.github.dev/
-      QUARKUS_DATASOURCE_JDBC_POOL_SIZE: 20
     ports:
       - 8085:8085
     depends_on:
       - db
     volumes:
       - ./realm-export.json:/opt/keycloak/data/import/realm-export.json # optional, for realm imports.
-    networks:
-      - gn-network
 
 volumes:
   geonetwork:

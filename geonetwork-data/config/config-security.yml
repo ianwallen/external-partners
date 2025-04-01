@@ -1,0 +1,13 @@
+keycloak:
+  enabled: true
+  force: true
+  hideLoginForm: true
+  clientId: "geonetwork-client"
+  clientSecret: "B3M9tO29JVSECJeQltwwfOw5CzxAXGQd"
+  realm: "master"  # Change if using a custom realm
+  authServerUrl: "https://solid-space-garbanzo-ppw99vg69p4374j9-8085.app.github.dev/"
+  redirectUri: "https://solid-space-garbanzo-ppw99vg69p4374j9-8080.app.github.dev/geonetwork/j_oauth2_callback"
+  roleClaim: "roles"
+  groupsClaim: "groups"
+  usernameClaim: "preferred_username"
+  emailClaim: "email"
