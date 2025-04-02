@@ -1,147 +1,150 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Explore Science & Nature</title>
-  <style>
-    body {
-      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
-      margin: 0;
-      padding: 0;
-      background-color: #000;
-      color: white;
-      text-align: center;
-      scroll-behavior: smooth;
-    }
-    header {
-      background-image: url('background.jpg');
-      background-size: cover;
-      background-position: center;
-      height: 100vh;
-      display: flex;
-      flex-direction: column;
-      justify-content: center;
-      align-items: center;
-      text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.7);
-      position: relative;
-      overflow: hidden;
-      animation: fadeIn 1.5s ease-in-out;
-      background-attachment: fixed;
-    }
-    @keyframes fadeIn {
-      from { opacity: 0; }
-      to { opacity: 1; }
-    }
-    header h1 {
-      font-size: 4rem;
-      font-weight: 700;
-      margin: 0;
-      animation: slideDown 1s ease-in-out;
-    }
-    header h2 {
-      font-size: 1.8rem;
-      opacity: 0.9;
-      max-width: 80%;
-      animation: slideUp 1s ease-in-out;
-    }
-    @keyframes slideDown {
-      from { transform: translateY(-20px); opacity: 0; }
-      to { transform: translateY(0); opacity: 1; }
-    }
-    @keyframes slideUp {
-      from { transform: translateY(20px); opacity: 0; }
-      to { transform: translateY(0); opacity: 1; }
-    }
-    .container {
-      padding: 80px 20px;
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      justify-content: center;
-      background: linear-gradient(to bottom, rgba(0, 0, 0, 0) 0%, #111 100%);
-      min-height: 100vh;
-      background-attachment: fixed;
-    }
-    .content-box {
-      max-width: 800px;
-      padding: 40px;
-      background: rgba(255, 255, 255, 0.1);
-      border-radius: 20px;
-      box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
-      transition: transform 0.3s ease, opacity 0.3s ease;
-      opacity: 0;
-      transform: translateY(30px);
-    }
-    .content-box.show {
-      opacity: 1;
-      transform: translateY(0);
-    }
-    .content-box h3 {
-      font-size: 2rem;
-      margin-bottom: 15px;
-    }
-    .content-box p {
-      font-size: 1.2rem;
-      opacity: 0.8;
-    }
-    footer {
-      padding: 30px;
-      background: #111;
-      font-size: 0.9rem;
-      opacity: 0.8;
-    }
-    footer a {
-      color: #ff9500;
-      text-decoration: none;
-    }
-  </style>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Explore Science & Nature</title>
+    <style>
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: #000;
+            color: whitesmoke;
+            text-align: center;
+            scroll-behavior: smooth;
+        }
+        section {
+            height: 100vh;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            padding: 80px 20px;
+            box-sizing: border-box;
+            background-attachment: fixed;
+        }
+
+        section:first-child {
+            background-image: url('background.jpg');
+            background-size: cover;
+            background-position: center;
+            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.7);
+            animation: fadeIn 1.5s ease-in-out;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
+
+        section h1 {
+            font-size: 4rem;
+            font-weight: 700;
+            margin: 0;
+            animation: slideDown 1s ease-in-out;
+        }
+
+        section h2 {
+            font-size: 1.8rem;
+            opacity: 0.9;
+            max-width: 80%;
+            animation: slideUp 1s ease-in-out;
+        }
+
+        @keyframes slideDown {
+            from { transform: translateY(-20px); opacity: 0; }
+            to { transform: translateY(0); opacity: 1; }
+        }
+
+        @keyframes slideUp {
+            from { transform: translateY(20px); opacity: 0; }
+            to { transform: translateY(0); opacity: 1; }
+        }
+
+        .content-box {
+            max-width: 800px;
+            padding: 40px;
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 20px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
+        }
+
+        .content-box h3 {
+            font-size: 2rem;
+            margin-bottom: 15px;
+        }
+
+        .content-box p {
+            font-size: 1.2rem;
+            opacity: 0.8;
+        }
+
+        footer {
+            padding: 30px;
+            background: #111;
+            font-size: 0.9rem;
+            opacity: 0.8;
+        }
+
+        footer a {
+            color: #ff9500;
+            text-decoration: none;
+        }
+
+        section:nth-child(2) {
+            background-image: url('canada-day.jpg'); /* Replace with your image */
+            background-size: cover;
+            background-position: center;
+        }
+
+        section:nth-child(3) {
+            background-image: url('sea.jpg'); /* Replace with your image */
+            background-size: cover;
+            background-position: center;
+        }
+
+        section:nth-child(4) {
+            background-image: url('trail.jpg'); /* optional, hiking background */
+            background-size: cover;
+            background-position: center;
+        }
+    </style>
 </head>
 <body>
-  <header>
-    <h1>XYZ Foundation</h1>
-    <h2>Your Canadian gateway to science data, mountain hiking, and epic gravel adventures (scroll down)</h2>
-  </header>
+    <section>
+        <h1>XYZ Foundation</h1>
+        <h2>Your Canadian gateway to science data, mountain hiking, and epic gravel adventures (scroll down)</h2>
+    </section>
 
-  <div class="container">
-    <div class="content-box">
-      <h3>Our Data Catalogue</h3>
-      <p>Explore a vast collection of science and environmental data, tailored for researchers and enthusiasts alike.</p>
-      <a href="https://solid-space-garbanzo-ppw99vg69p4374j9-8080.app.github.dev/" style="color: #ff9500; text-decoration: none; font-weight: bold;">Access Catalogue →</a>
-    </div>
+    <section>
+        <div class="content-box">
+            <h3>Our Data Catalogue</h3>
+            <p>Explore a vast collection of science and environmental data, tailored for researchers and enthusiasts alike.</p>
+            <a href="https://solid-space-garbanzo-ppw99vg69p4374j9-8080.app.github.dev/" style="color: #ff9500; text-decoration: none; font-weight: bold;">Access Catalogue →</a>
+        </div>
+    </section>
 
-    <div class="content-box">
-      <h3>Partner's CSW Client</h3>
-      <p>Visit our partner's Catalog Service for the Web to explore and harvest science datasets.</p>
-      <p></p>(Login may be required)</p>
-      <a href="https://api-proxy-dev.edh-cde.unclass.dfo-mpo.gc.ca/edh/cswviewer" style="color: #ff9500; text-decoration: none; font-weight: bold;">Explore CSW Client →</a>
-    </div>
+    <section>
+        <div class="content-box">
+            <h3>Partner's CSW Client</h3>
+            <p>Visit our partner's Catalog Service for the Web to explore and harvest science datasets.</p>
+            <p>(Login may be required)</p>
+            <a href="https://api-proxy-dev.edh-cde.unclass.dfo-mpo.gc.ca/edh/cswviewer" style="color: #ff9500; text-decoration: none; font-weight: bold;">Explore CSW Client →</a>
+        </div>
+    </section>
 
-    <div class="content-box">
-      <h3>Hiking & Gravel Trails</h3>
-      <p>Find the best trails in Canada for hiking, cycling, and gravel adventures.</p>
-      <a href="https://ncc-ccn.gc.ca/places/trail-map" style="color: #ff9500; text-decoration: none; font-weight: bold;">Discover Trails →</a>
-    </div>
-  </div>
+    <section>
+        <div class="content-box">
+            <h3>Hiking & Gravel Trails</h3>
+            <p>Find the best trails in Canada for hiking, cycling, and gravel adventures.</p>
+            <a href="https://ncc-ccn.gc.ca/places/trail-map" style="color: #ff9500; text-decoration: none; font-weight: bold;">Discover Trails →</a>
+        </div>
+    </section>
 
-  <footer>
-    <p>This is a simulated portal for an imaginary DFO external partner's science portal.</p>
-    <p><a href="https://en.wikipedia.org/wiki/Nature" target="_blank">Learn More About Nature</a></p>
-  </footer>
-
-  <script>
-    document.addEventListener("DOMContentLoaded", () => {
-      const contentBoxes = document.querySelectorAll(".content-box");
-      const observer = new IntersectionObserver(entries => {
-        entries.forEach(entry => {
-          if (entry.isIntersecting) {
-            entry.target.classList.add("show");
-          }
-        });
-      }, { threshold: 0.1 });
-      
-      contentBoxes.forEach(box => observer.observe(box));
-    });
-  </script>
+    <footer>
+        <p>This is a simulated portal for an imaginary DFO external partner's science portal.</p>
+        <p><a href="https://en.wikipedia.org/wiki/Nature" target="_blank">Learn More About Nature</a></p>
+    </footer>
 </body>
 </html>
