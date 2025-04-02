@@ -12,6 +12,7 @@
       background-color: #000;
       color: white;
       text-align: center;
+      scroll-behavior: smooth;
     }
     header {
       background-image: url('background.jpg');
@@ -22,40 +23,73 @@
       flex-direction: column;
       justify-content: center;
       align-items: center;
-      text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5);
+      text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.7);
+      position: relative;
+      overflow: hidden;
+      animation: fadeIn 1.5s ease-in-out;
+      background-attachment: fixed;
+    }
+    @keyframes fadeIn {
+      from { opacity: 0; }
+      to { opacity: 1; }
     }
     header h1 {
       font-size: 4rem;
       font-weight: 700;
       margin: 0;
+      animation: slideDown 1s ease-in-out;
     }
-    header p {
-      font-size: 1.5rem;
-      opacity: 0.8;
+    header h2 {
+      font-size: 1.8rem;
+      opacity: 0.9;
+      max-width: 80%;
+      animation: slideUp 1s ease-in-out;
+    }
+    @keyframes slideDown {
+      from { transform: translateY(-20px); opacity: 0; }
+      to { transform: translateY(0); opacity: 1; }
+    }
+    @keyframes slideUp {
+      from { transform: translateY(20px); opacity: 0; }
+      to { transform: translateY(0); opacity: 1; }
     }
     .container {
-      padding: 60px 20px;
+      padding: 80px 20px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      background: linear-gradient(to bottom, rgba(0, 0, 0, 0) 0%, #111 100%);
+      min-height: 100vh;
+      background-attachment: fixed;
     }
-    .cta-button {
-      display: inline-block;
-      margin: 20px;
-      padding: 15px 30px;
-      font-size: 1.3rem;
-      color: white;
-      background: linear-gradient(90deg, #ff9500, #ff5e00);
-      text-decoration: none;
-      border-radius: 50px;
+    .content-box {
+      max-width: 800px;
+      padding: 40px;
+      background: rgba(255, 255, 255, 0.1);
+      border-radius: 20px;
+      box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
       transition: transform 0.3s ease, opacity 0.3s ease;
+      opacity: 0;
+      transform: translateY(30px);
     }
-    .cta-button:hover {
-      transform: scale(1.05);
-      opacity: 0.9;
+    .content-box.show {
+      opacity: 1;
+      transform: translateY(0);
+    }
+    .content-box h3 {
+      font-size: 2rem;
+      margin-bottom: 15px;
+    }
+    .content-box p {
+      font-size: 1.2rem;
+      opacity: 0.8;
     }
     footer {
       padding: 30px;
       background: #111;
       font-size: 0.9rem;
-      opacity: 0.7;
+      opacity: 0.8;
     }
     footer a {
       color: #ff9500;
@@ -66,18 +100,48 @@
 <body>
   <header>
     <h1>XYZ Foundation</h1>
-    <h2>Your Canadian gateway to science data, mountain hiking, and epic gravel adventures</h2>
+    <h2>Your Canadian gateway to science data, mountain hiking, and epic gravel adventures (scroll down)</h2>
   </header>
 
   <div class="container">
-    <a href="https://solid-space-garbanzo-ppw99vg69p4374j9-8080.app.github.dev/" class="cta-button">Our Data Catalogue</a>
-    <a href="https://api-proxy-dev.edh-cde.unclass.dfo-mpo.gc.ca/edh/cswviewer" class="cta-button">Partner CSW Client</a>
-    <a href="https://ncc-ccn.gc.ca/places/trail-map" class="cta-button">Hiking/Gravel Trails</a>
+    <div class="content-box">
+      <h3>Our Data Catalogue</h3>
+      <p>Explore a vast collection of science and environmental data, tailored for researchers and enthusiasts alike.</p>
+      <a href="https://solid-space-garbanzo-ppw99vg69p4374j9-8080.app.github.dev/" style="color: #ff9500; text-decoration: none; font-weight: bold;">Access Catalogue →</a>
+    </div>
+
+    <div class="content-box">
+      <h3>Partner's CSW Client</h3>
+      <p>Visit our partner's Catalog Service for the Web to explore and harvest science datasets.</p>
+      <p></p>(Login may be required)</p>
+      <a href="https://api-proxy-dev.edh-cde.unclass.dfo-mpo.gc.ca/edh/cswviewer" style="color: #ff9500; text-decoration: none; font-weight: bold;">Explore CSW Client →</a>
+    </div>
+
+    <div class="content-box">
+      <h3>Hiking & Gravel Trails</h3>
+      <p>Find the best trails in Canada for hiking, cycling, and gravel adventures.</p>
+      <a href="https://ncc-ccn.gc.ca/places/trail-map" style="color: #ff9500; text-decoration: none; font-weight: bold;">Discover Trails →</a>
+    </div>
   </div>
 
   <footer>
     <p>This is a simulated portal for an imaginary DFO external partner's science portal.</p>
     <p><a href="https://en.wikipedia.org/wiki/Nature" target="_blank">Learn More About Nature</a></p>
   </footer>
+
+  <script>
+    document.addEventListener("DOMContentLoaded", () => {
+      const contentBoxes = document.querySelectorAll(".content-box");
+      const observer = new IntersectionObserver(entries => {
+        entries.forEach(entry => {
+          if (entry.isIntersecting) {
+            entry.target.classList.add("show");
+          }
+        });
+      }, { threshold: 0.1 });
+      
+      contentBoxes.forEach(box => observer.observe(box));
+    });
+  </script>
 </body>
 </html>
