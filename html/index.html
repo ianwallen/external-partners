@@ -40,9 +40,9 @@
 
         section h1 {
             font-size: 4rem;
-            font-weight: 700;
+            font-weight: 500;
             margin: 0;
-            animation: slideDown 1s ease-in-out;
+            animation: slideDown 1s  ease-in-out;
         }
 
         section h2 {
@@ -109,12 +109,19 @@
             background-size: cover;
             background-position: center;
         }
+
+        section:nth-child(5) {
+            background-image: url('user.png'); /* optional, hiking background */
+            background-size: cover;
+            background-position: center;
+        }
+
     </style>
 </head>
 <body>
     <section>
-        <h1 style="color: orange;">Research Institute of XYZ</h1>
-        <h2>Your Canadian gateway to science data, mountain hiking, and epic gravel adventures (scroll down ↓)</h2>
+        <h1 style="color: greenyellow;">Research Institute of XYZ</h1>
+        <h2 style="color: greenyellow;">Your Canadian gateway to science data, mountain hiking, and epic gravel adventures (scroll down ↓)</h2>
     </section>
 
     <section>
@@ -142,9 +149,16 @@
         </div>
     </section>
 
+    <section>
+        <div class="content-box">
+            <h3 style="color: white;">User Admin Access</h3>
+            <p style="color: white;">Manage the users of the site.</p>
+            <a href="https://solid-space-garbanzo-ppw99vg69p4374j9-8085.app.github.dev/" style="color: greenyellow; text-decoration: none; font-weight: bold;" target="_blank">Access →</a>
+        </div>
+    </section>
+
     <footer>
-        <p>This is an imaginary external partner's science portal.</p>
-        <p><a href="https://solid-space-garbanzo-ppw99vg69p4374j9-8085.app.github.dev/" target="_blank">User Admin Access</a></p>
+        <p>This is an imaginary portal.</p>
     </footer>
 </body>
 </html>

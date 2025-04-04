@@ -26,10 +26,10 @@ x-geonetwork-environment:
     -Des.host=elasticsearch
     -Des.protocol=http
     -Des.port=9200
-    -Des.url=http://elasticsearch:9200
+    -Des.url=https://solid-space-garbanzo-ppw99vg69p4374j9-9200.app.github.dev/
     -Des.username=
     -Des.password=
-    -Dgeonetwork.ESFeaturesProxy.targetUri=http://elasticsearch:9000/gn-features/{_}
+    -Dgeonetwork.ESFeaturesProxy.targetUri=https://solid-space-garbanzo-ppw99vg69p4374j9-9200.app.github.dev/gn-features/{_}
     -Dgeonetwork.HttpDashboardProxy.targetUri=http://kibana:5601
     -Dgeonetwork.MicroServicesProxy.targetUri=http://ogc-api-records-service:8080
   GEONETWORK_DB_TYPE: postgres
@@ -163,7 +163,7 @@ services:
       GN_AUTH_KEYCLOAK_HIDE_LOGIN_FORM: "false"
       GN_AUTH_KEYCLOAK_CLIENT_ID: "geonetwork"
       GN_AUTH_KEYCLOAK_REALM: "master"
-      GN_AUTH_KEYCLOAK_URL: "https://solid-space-garbanzo-ppw99vg69p4374j9-8085.app.github.dev/realms/master/protocol/openid-connect/auth/"
+      GN_AUTH_KEYCLOAK_URL: "https://solid-space-garbanzo-ppw99vg69p4374j9-8085.app.github.dev/realms/master/geonetwork/protocol/openid-connect/auth/"
       GN_AUTH_KEYCLOAK_REDIRECT_URI: "https://solid-space-garbanzo-ppw99vg69p4374j9-8080.app.github.dev/*"
       GN_AUTH_KEYCLOAK_CLIENT_SECRET: "Wjf73ttbLrNhj3SiS7Fp9jd2oWx91XLe"
       GN_AUTH_KEYCLOAK_ROLE_CLAIM: "roles"
@@ -245,7 +245,7 @@ services:
     image: kibana:8.14.3
     environment:
       SERVER_NAME: "kibana"
-      ELASTICSEARCH_URL: http://elasticsearch:9200/
+      ELASTICSEARCH_URL: https://solid-space-garbanzo-ppw99vg69p4374j9-9200.app.github.dev/
       SERVER_BASEPATH: /geonetwork/dashboards
       SERVER_REWRITEBASEPATH: "false"
       XPACK_MONITORING_UI_CONTAINER_ELASTICSEARCH_ENABLED: "true"
