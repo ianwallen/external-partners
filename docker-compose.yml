@@ -26,10 +26,10 @@ x-geonetwork-environment:
     -Des.host=elasticsearch
     -Des.protocol=http
     -Des.port=9200
-    -Des.url=https://solid-space-garbanzo-ppw99vg69p4374j9-9200.app.github.dev/
+    -Des.url=https://sturdy-space-halibut-ppw99vg6p6pfrw94-9200.app.github.dev/
     -Des.username=
     -Des.password=
-    -Dgeonetwork.ESFeaturesProxy.targetUri=https://solid-space-garbanzo-ppw99vg69p4374j9-9200.app.github.dev/gn-features/{_}
+    -Dgeonetwork.ESFeaturesProxy.targetUri=https://sturdy-space-halibut-ppw99vg6p6pfrw94-9200.app.github.dev/gn-features/{_}
     -Dgeonetwork.HttpDashboardProxy.targetUri=http://kibana:5601
     -Dgeonetwork.MicroServicesProxy.targetUri=http://ogc-api-records-service:8080
   GEONETWORK_DB_TYPE: postgres
@@ -163,14 +163,14 @@ services:
       GN_AUTH_KEYCLOAK_HIDE_LOGIN_FORM: "false"
       GN_AUTH_KEYCLOAK_CLIENT_ID: "geonetwork"
       GN_AUTH_KEYCLOAK_REALM: "master"
-      GN_AUTH_KEYCLOAK_URL: "https://solid-space-garbanzo-ppw99vg69p4374j9-8085.app.github.dev/realms/master/geonetwork/protocol/openid-connect/auth/"
-      GN_AUTH_KEYCLOAK_REDIRECT_URI: "https://solid-space-garbanzo-ppw99vg69p4374j9-8080.app.github.dev/*"
+      GN_AUTH_KEYCLOAK_URL: "https://sturdy-space-halibut-ppw99vg6p6pfrw94-8085.app.github.dev/realms/master/geonetwork/protocol/openid-connect/auth/"
+      GN_AUTH_KEYCLOAK_REDIRECT_URI: "https://sturdy-space-halibut-ppw99vg6p6pfrw94-8080.app.github.dev/*"
       GN_AUTH_KEYCLOAK_CLIENT_SECRET: "Wjf73ttbLrNhj3SiS7Fp9jd2oWx91XLe"
       GN_AUTH_KEYCLOAK_ROLE_CLAIM: "roles"
       GN_AUTH_KEYCLOAK_GROUPS_CLAIM: "groups"
       GN_AUTH_KEYCLOAK_USERNAME_CLAIM: "preferred_username"
       GN_AUTH_KEYCLOAK_EMAIL_CLAIM: "email"
-      GN_AUTH_KEYCLOAK_LOGOUT_REDIRECT_URI: "https://solid-space-garbanzo-ppw99vg69p4374j9-8085.app.github.dev/realms/master/protocol/openid-connect/logout"
+      GN_AUTH_KEYCLOAK_LOGOUT_REDIRECT_URI: "https://sturdy-space-halibut-ppw99vg6p6pfrw94-8085.app.github.dev/realms/master/protocol/openid-connect/logout"
 
     ports:
       - 8080:8080
@@ -245,7 +245,7 @@ services:
     image: kibana:8.14.3
     environment:
       SERVER_NAME: "kibana"
-      ELASTICSEARCH_URL: https://solid-space-garbanzo-ppw99vg69p4374j9-9200.app.github.dev/
+      ELASTICSEARCH_URL: https://sturdy-space-halibut-ppw99vg6p6pfrw94-9200.app.github.dev/
       SERVER_BASEPATH: /geonetwork/dashboards
       SERVER_REWRITEBASEPATH: "false"
       XPACK_MONITORING_UI_CONTAINER_ELASTICSEARCH_ENABLED: "true"
@@ -280,7 +280,7 @@ services:
       KC_DB_USERNAME: keycloak
       KC_DB_PASSWORD: password
       KC_HTTP_PORT: 8085
-      KC_HOSTNAME: https://solid-space-garbanzo-ppw99vg69p4374j9-8085.app.github.dev/
+      KC_HOSTNAME: https://sturdy-space-halibut-ppw99vg6p6pfrw94-8085.app.github.dev/
       QUARKUS_DATASOURCE_JDBC_POOL_SIZE: 20
     ports:
       - 8085:8085
