@@ -45,7 +45,7 @@ x-service-geonetwork:
   &default-service-geonetwork
   image: geonetwork:4.4.6
   healthcheck:
-    test: "curl https://vigilant-goggles-7p5wwqrxw9vfx554-8080/"
+    test: "curl http://localhost:8080/"
     interval: 5s
     timeout: 5s
     retries: 30
