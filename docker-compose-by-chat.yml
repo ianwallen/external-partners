@@ -1,9 +1,8 @@
-
 name: gn
 
 x-geonetwork-environment:
   &default-geonetwork-environment
-  WEBAPP_CONTEXT_PATH: / 
+  WEBAPP_CONTEXT_PATH: /
   DATA_DIR: /catalogue-data
   TZ: Europe/Amsterdam
   JAVA_OPTS: >-
@@ -23,16 +22,7 @@ x-geonetwork-environment:
     -Dgeonetwork.indexConfig.dir=/opt/geonetwork/WEB-INF/data/config/index
     -Dgeonetwork.schemapublication.dir=/opt/geonetwork/WEB-INF/data/resources/schemapublication
     -Dgeonetwork.htmlcache.dir=/opt/geonetwork/WEB-INF/data/resources/htmlcache
-    -Des.host=elasticsearch
-    -Des.protocol=http
-    -Des.port=9200
-    -Des.protocol=http
-    -Des.url=http://elasticsearch:9200
-    -Des.username=
-    -Des.password=
-    -Dgeonetwork.ESFeaturesProxy.targetUri=http://vigilant-goggles-7p5wwqrxw9vfx554-9200.app.github.dev/gn-features/{_}
-    -Dgeonetwork.HttpDashboardProxy.targetUri=https://vigilant-goggles-7p5wwqrxw9vfx554-5601.app.github.dev/kibana
-    -Dgeonetwork.MicroServicesProxy.targetUri=https://vigilant-goggles-7p5wwqrxw9vfx554-8080/ogc-api-records-service 
+    -Dgeonetwork.MicroServicesProxy.targetUri=https://vigilant-goggles-7p5wwqrxw9vfx554-8080/ogc-api-records-service
   GEONETWORK_DB_TYPE: postgres
   GEONETWORK_DB_HOST: database
   GEONETWORK_DB_PORT: 5432
@@ -62,10 +52,8 @@ x-service-geonetwork:
   restart: always
   user: root
   volumes:
-   # - geonetwork:/catalogue-data
     - ./geonetwork-data:/catalogue-data
     - ./pgdata:/var/lib/postgresql/data
-    - ./esdata:/usr/share/elasticsearch/data
     - ./activemq-data:/var/lib/jetty/activemq-data 
   depends_on:
     database:
@@ -81,12 +69,12 @@ services:
     ports:
       - "8082:80"
     volumes:
-      - ./html:/usr/share/nginx/html:ro  # Serve your HTML file
+      - ./html:/usr/share/nginx/html:ro
     labels:
       - "traefik.enable=true"
-      - "traefik.http.routers.science-portal.rule=PathPrefix(`/portal`)"  # Traefik route
+      - "traefik.http.routers.science-portal.rule=PathPrefix(`/portal`)"
       - "traefik.http.routers.science-portal.entrypoints=websecure"
-      - "traefik.http.services.science-portal-service.loadbalancer.server.port=80"  # Expose port 80
+      - "traefik.http.services.science-portal-service.loadbalancer.server.port=80"
     networks:
       - web
 
@@ -122,7 +110,7 @@ services:
       - "traefik.http.routers.research-portal.rule=PathPrefix(`/portal`)"
       - "traefik.http.routers.research-portal.entrypoints=websecure"
       - "traefik.http.routers.research-portal.service=research-portal-service"
-      - "traefik.http.services.research-portal-service.loadbalancer.server.port=8082" # Changed to 8082
+      - "traefik.http.services.research-portal-service.loadbalancer.server.port=8082"
 
   database:
     image: postgis/postgis:11-2.5
@@ -136,8 +124,6 @@ services:
       - "log_statement=all"
       - "-c"
       - "logging_collector=true"
-      - "-c"
-      - "log_file_mode=0644"
       - "-c"
       - "log_directory=/var/log/postgresql"
       - "-c"
@@ -166,13 +152,12 @@ services:
       GN_AUTH_KEYCLOAK_REALM: "master"
       GN_AUTH_KEYCLOAK_URL: "https://vigilant-goggles-7p5wwqrxw9vfx554-8085.app.github.dev/realms/master/geonetwork/protocol/openid-connect/auth/"
       GN_AUTH_KEYCLOAK_REDIRECT_URI: "https://vigilant-goggles-7p5wwqrxw9vfx554-8080.app.github.dev/*"
-      GN_AUTH_KEYCLOAK_CLIENT_SECRET: "BtPnEGGX3fH8eTcSBhY41IwJvfxo8i9s"
+      GN_AUTH_KEYCLOAK_CLIENT_SECRET: "Wjf73ttbLrNhj3SiS7Fp9jd2oWx91XLe"
       GN_AUTH_KEYCLOAK_ROLE_CLAIM: "roles"
       GN_AUTH_KEYCLOAK_GROUPS_CLAIM: "groups"
       GN_AUTH_KEYCLOAK_USERNAME_CLAIM: "preferred_username"
       GN_AUTH_KEYCLOAK_EMAIL_CLAIM: "email"
       GN_AUTH_KEYCLOAK_LOGOUT_REDIRECT_URI: "https://vigilant-goggles-7p5wwqrxw9vfx554-8085.app.github.dev/realms/master/protocol/openid-connect/logout"
-
     ports:
       - 8080:8080
     networks:
@@ -200,7 +185,6 @@ services:
       SPRING_DATASOURCE_PASSWORD: geonetwork
       GN_BASEURL: https://vigilant-goggles-7p5wwqrxw9vfx554-8080.app.github.dev/geonetwork/api
       GN_LEGACY_URL: http//vigilant-goggles-7p5wwqrxw9vfx554-8080.app.github.dev/geonetwork
-      GN_INDEX_URL: https://vigilant-goggles-7p5wwqrxw9vfx554-8080.app.github.dev/geonetwork/api-9200.app.github.dev
       SERVER_FORWARDHEADERSSTRATEGY: FRAMEWORK
       JAVA_OPTS: -Dfile.encoding=UTF-8
     healthcheck:
@@ -214,49 +198,6 @@ services:
     networks:
       - gn-network
 
-  elasticsearch:
-    image: elasticsearch:8.14.3
-    ports:
-      - 9200:9200
-    ulimits:
-      memlock:
-        soft: -1
-        hard: -1
-      nofile:
-        soft: 65536
-        hard: 65536
-    healthcheck:
-      test: ["CMD", "curl", "-s", "-XGET", "http://localhost:9200/_cluster/health?wait_for_status=yellow&timeout=5s"]
-      interval: 5s
-      timeout: 5s
-      retries: 10
-      start_period: 10s
-    environment:
-      - cluster.name=docker-cluster
-      - bootstrap.memory_lock=true
-      - discovery.type=single-node
-      - "ES_JAVA_OPTS=-Xms512m -Xmx512m"
-      - xpack.security.enabled=false
-      - xpack.security.enrollment.enabled=false
-    volumes:
-      - esdata:/usr/share/elasticsearch/data
-    networks:
-      - gn-network
-
-  kibana:
-    image: kibana:8.14.3
-    environment:
-      SERVER_NAME: "kibana"
-      ELASTICSEARCH_URL: https://vigilant-goggles-7p5wwqrxw9vfx554-9200.app.github.dev/
-      SERVER_BASEPATH: /geonetwork/dashboards
-      SERVER_REWRITEBASEPATH: "false"
-      XPACK_MONITORING_UI_CONTAINER_ELASTICSEARCH_ENABLED: "true"
-    depends_on:
-      elasticsearch:
-        condition: service_healthy
-    networks:
-      - gn-network
-
   db:
     image: postgres:13
     environment:
@@ -266,7 +207,7 @@ services:
     volumes:
       - db-data:/var/lib/postgresql/data
     ports:
-      - 5432:5432 # optional, only if you want to access the db directly from your host.
+      - 5432:5432
     networks:
       - gn-network
 
@@ -289,13 +230,12 @@ services:
     depends_on:
       - db
     volumes:
-      - ./realm-export.json:/opt/keycloak/data/import/realm-export.json # optional, for realm imports.
+      - ./realm-export.json:/opt/keycloak/data/import/realm-export.json
     networks:
       - gn-network
 
 volumes:
   geonetwork:
-  esdata:
   pgdata:
   pglog:
   traefiklog:
@@ -305,4 +245,4 @@ networks:
   gn-network:
     driver: bridge
   web:
-    external: true 
+    external: true
