@@ -16,6 +16,8 @@ x-geonetwork-environment:
     -Dorg.apache.activemq.broker.BrokerService.tempUsage.limit=2gb
     -Dcom.sun.management.jmxremote=false
 
+# -Des.url=http://elasticsearch:9200
+
   GN_CONFIG_PROPERTIES: >-
     -Dgeonetwork.dir=/catalogue-data
     -Dgeonetwork.formatter.dir=/catalogue-data/data/formatter
@@ -27,7 +29,7 @@ x-geonetwork-environment:
     -Des.protocol=http
     -Des.port=9200
     -Des.protocol=http
-    -Des.url=http://elasticsearch:9200
+    -Des.url=https://vigilant-goggles-7p5wwqrxw9vfx554-9200.app.github.dev/ 
     -Des.username=
     -Des.password=
     -Dgeonetwork.ESFeaturesProxy.targetUri=http://vigilant-goggles-7p5wwqrxw9vfx554-9200.app.github.dev/gn-features/{_}
@@ -41,11 +43,13 @@ x-geonetwork-environment:
   GEONETWORK_DB_PASSWORD: geonetwork
   VIRTUAL_HOST: localhost
 
+# test: "curl http://localhost:8080/" 
+
 x-service-geonetwork:
   &default-service-geonetwork
   image: geonetwork:4.4.6
   healthcheck:
-    test: "curl http://localhost:8080/"
+    test: "curl https://vigilant-goggles-7p5wwqrxw9vfx554-8080.app.github.dev/"
     interval: 5s
     timeout: 5s
     retries: 30
@@ -153,6 +157,7 @@ services:
     networks:
       - gn-network
 
+# change the GN_AUTH_KEYCLOAK_URL, GN_AUTH_KEYCLOAK_REDIRECT_URI, GN_AUTH_KEYCLOAK_CLIENT_SECRET and GN_AUTH_KEYCLOAK_LOGOUT_REDIRECT_URI
   geonetwork:
     <<: *default-service-geonetwork
     environment:
@@ -178,6 +183,8 @@ services:
     networks:
       - gn-network
 
+# we don't really need to scale up but you never know... 
+
   geonetwork-replica:
     profiles: ["scaled"]
     <<: *default-service-geonetwork
@@ -190,6 +197,8 @@ services:
       replicas: 1
     ports:
       - "8081-8082:8080"
+
+# revisit if it doesn't work. 
 
   ogc-api-records-service:
     image: geonetwork/gn-cloud-ogc-api-records-service:4.4.3-0
