@@ -226,7 +226,7 @@ services:
         soft: 65536
         hard: 65536
     healthcheck:
-      test: ["CMD", "curl", "-s", "-XGET", "http://localhost:9200/_cluster/health?wait_for_status=yellow&timeout=5s"]
+      test: ["CMD", "curl", "-s", "-XGET", "https://vigilant-goggles-7p5wwqrxw9vfx554-9200.app.github.dev/_cluster/health?wait_for_status=yellow&timeout=5s"]
       interval: 5s
       timeout: 5s
       retries: 10
