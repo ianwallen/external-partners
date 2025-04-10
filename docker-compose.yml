@@ -249,6 +249,7 @@ services:
 # The ogc-api-records-service and kibana services depend on elasticsearch.
   elasticsearch:
     image: elasticsearch:8.14.3
+# probably we don't need the commented lines below because of settings in traefik, but keep here for now just in case. 
 #    ports:
 #      - 9200:9200
     ulimits:
@@ -289,7 +290,6 @@ services:
 # XPACK_MONITORING_UI_CONTAINER_ELASTICSEARCH_ENABLED: "true" enables monitoring.
 # depends_on: elasticsearch: condition: service_healthy ensures that Kibana starts only after Elasticsearch is running.
 # Traefik is configured to route traffic to kibana from the /geonetwork/dashboards path. This allows the user to access Kibana from the browser.
-
   kibana:
     image: kibana:8.14.3
     environment:
@@ -312,7 +312,7 @@ volumes:
   pglog:
   traefiklog:
 
-# every service is on the gn-network, and the external web should be defined with docker create network web before the first time you create the
+# All services are on the gn-network, and the external web should be defined with docker create network web before the first time you create the
 # docker-compose with the up -d. Note that docker-compose adds gn_ in front of the gn-network so in reality the network name is gn_gn-network. 
 networks:
   gn-network:
