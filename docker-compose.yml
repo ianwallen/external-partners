@@ -41,9 +41,7 @@ x-geonetwork-environment:
   GEONETWORK_DB_NAME: geonetwork
   GEONETWORK_DB_USERNAME: geonetwork
   GEONETWORK_DB_PASSWORD: geonetwork
-  VIRTUAL_HOST: localhost
-
-# test: "curl http://localhost:8080/" 
+  VIRTUAL_HOST: https://vigilant-goggles-7p5wwqrxw9vfx554-8080
 
 x-service-geonetwork:
   &default-service-geonetwork
