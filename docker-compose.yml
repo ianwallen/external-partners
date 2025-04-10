@@ -34,7 +34,6 @@ x-geonetwork-environment:
     -Des.username=
     -Des.password=
     -Dgeonetwork.ESFeaturesProxy.targetUri=http://ogc-api-records-service:8080/gn-features/{_} # use the ogc-api-records-service internal name
-    -Dgeonetwork.HttpDashboardProxy.targetUri=http://kibana:5601/geonetwork/dashboards # use kibana internal name
     -Dgeonetwork.MicroServicesProxy.targetUri=http://ogc-api-records-service:8080/ogc-api-records-service #use ogc api records service internal name
   GEONETWORK_DB_TYPE: postgres
   GEONETWORK_DB_HOST: database
@@ -43,6 +42,7 @@ x-geonetwork-environment:
   GEONETWORK_DB_USERNAME: geonetwork
   GEONETWORK_DB_PASSWORD: geonetwork
   VIRTUAL_HOST: localhost 
+#  -Dgeonetwork.HttpDashboardProxy.targetUri=http://kibana:5601/geonetwork/dashboards # use kibana internal name
 
 # geonetwork web traffic settings
 x-service-geonetwork:
@@ -284,17 +284,17 @@ services:
 
 # Kibana is a visualization and exploration tool designed to work with Elasticsearch. It allows you to create dashboards, charts, and graphs 
 # to visualize and analyze the data stored in Elasticsearch.
-# ELASTICSEARCH_URL: http://elasticsearch:9200 tells Kibana where to find Elasticsearch.
+# ELASTICSEARCH_URL: http://elasticsearch:9200 tells Kibana where to find Elasticsearch on the docker network i.e. gn-network
 # SERVER_BASEPATH: /geonetwork/dashboards sets the base path for Kibana's interface.
 # SERVER_REWRITEBASEPATH: "false" prevents Kibana from rewriting the base path.
 # XPACK_MONITORING_UI_CONTAINER_ELASTICSEARCH_ENABLED: "true" enables monitoring.
-# depends_on: elasticsearch: condition: service_healthy ensures that Kibana starts only after Elasticsearch is running.
+# "depends_on: elasticsearch: condition: service_healthy" ensures that Kibana starts only after Elasticsearch is running.
 # Traefik is configured to route traffic to kibana from the /geonetwork/dashboards path. This allows the user to access Kibana from the browser.
   kibana:
     image: kibana:8.14.3
     environment:
       SERVER_NAME: "kibana"
-      ELASTICSEARCH_URL: https://vigilant-goggles-7p5wwqrxw9vfx554.github.dev-9200/elasticsearch  
+      ELASTICSEARCH_URL: http://elasticsearch:9200
       SERVER_BASEPATH: /geonetwork/dashboards
       SERVER_REWRITEBASEPATH: "false"
       XPACK_MONITORING_UI_CONTAINER_ELASTICSEARCH_ENABLED: "true"
@@ -303,6 +303,11 @@ services:
         condition: service_healthy
     networks:
       - gn-network
+    labels:
+      - "traefik.enable=true"
+      - "traefik.http.routers.kibana.rule=PathPrefix(`/geonetwork/dashboards`)"
+      - "traefik.http.routers.kibana.entrypoints=websecure"
+      - "traefik.http.services.kibana.loadbalancer.server.port=5601"
 
 # the above services use several persistent volumes, these are defined below 
 volumes:
