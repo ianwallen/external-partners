@@ -1,6 +1,8 @@
 
+# project name
 name: gn
 
+# geonetwork java settings
 x-geonetwork-environment:
   &default-geonetwork-environment
   WEBAPP_CONTEXT_PATH: / 
@@ -16,6 +18,7 @@ x-geonetwork-environment:
     -Dorg.apache.activemq.broker.BrokerService.tempUsage.limit=2gb
     -Dcom.sun.management.jmxremote=false
 
+# geonetwork configuration properties for elasticsearch and geonetwork API
   GN_CONFIG_PROPERTIES: >-
     -Dgeonetwork.dir=/catalogue-data
     -Dgeonetwork.formatter.dir=/catalogue-data/data/formatter
@@ -41,6 +44,7 @@ x-geonetwork-environment:
   GEONETWORK_DB_PASSWORD: geonetwork
   VIRTUAL_HOST: localhost 
 
+# geonetwork web traffic settings
 x-service-geonetwork:
   &default-service-geonetwork
   image: geonetwork:4.4.6
@@ -75,6 +79,7 @@ x-service-geonetwork:
 
 services:
 
+# nginx is used only for the static pages of the portal, we may use it for other services too in the future if we run into issues with Traefik. 
   nginx:
     image: nginx:alpine
     container_name: science-portal
@@ -90,6 +95,10 @@ services:
     networks:
       - web
 
+# Traefik is configured to receive incoming HTTP/HTTPS requests on ports 80 and 443, respectively
+# Requests with the /geonetwork path prefix are routed to the geonetwork service.
+# Requests with the /portal path prefix are routed to the nginx service.
+# Requests are also routed to the service on port 8082, and given the label, this service is named: research-portal-service.
   traefik:
     image: "traefik:v2.10"
     container_name: "traefik"
@@ -123,6 +132,8 @@ services:
       - "traefik.http.routers.research-portal.service=research-portal-service"
       - "traefik.http.services.research-portal-service.loadbalancer.server.port=8082" # Changed to 8082
 
+# GeoNetwork, the core application within this setup, requires a database to store its metadata, configuration, and other persistent data. 
+# The database service fulfills this requirement.
   database:
     image: postgis/postgis:11-2.5
     environment:
@@ -152,6 +163,7 @@ services:
     networks:
       - gn-network
 
+# the main service that delivers Geonetwork, on port 8080. 
   geonetwork:
     <<: *default-service-geonetwork
     environment:
@@ -164,8 +176,19 @@ services:
     networks:
       - gn-network
 
-# we don't really need to scale up but you never know... 
-
+# Used to create a scaled-out instance of the GeoNetwork application. We may need it in the future. 
+# The profiles: ["scaled"] line indicates that this service is intended for scaling purposes. 
+# It's only activated when you use Docker Compose profiles, specifically the "scaled" profile.
+# The deploy: mode: replicated replicas: 1 section configures Docker to run one replica of the 
+# GeoNetwork container. You could increase the replicas value to have more geonetwork instances.
+# The environment section inherits the default GeoNetwork environment variables from x-geonetwork-environment.
+# HARVESTER_SCHEDULER_ENABLED: "false" disables the harvester scheduler in this replica.
+# HARVESTER_REFRESH_INTERVAL_MINUTES: 0 sets the harvester refresh interval to 0 minutes.
+# ports: - "8081-8082:8080" exposes a range of ports on the host, mapping them to port 8080 
+# within the container. This is done to avoid port conflicts when scaling.
+# The <<: *default-service-geonetwork and <<: *default-geonetwork-environment lines reuse the base 
+# GeoNetwork service and environment configurations, ensuring consistency between the main geonetwork 
+# service and its replica.
   geonetwork-replica:
     profiles: ["scaled"]
     <<: *default-service-geonetwork
@@ -179,8 +202,15 @@ services:
     ports:
       - "8081-8082:8080"
 
-# revisit if it doesn't work. 
-
+# The OGC API - Records standard defines a web-based interface for accessing and managing metadata records. 
+# This service implements that standard, allowing external applications to query and retrieve metadata from 
+# your GeoNetwork instance.
+# SPRING_PROFILES_ACTIVE: standalone indicates that the service is running in standalone mode.
+# SPRING_DATASOURCE_URL, SPRING_DATASOURCE_USERNAME, and SPRING_DATASOURCE_PASSWORD provide the database connection details.
+# GN_BASEURL and GN_LEGACY_URL point to the GeoNetwork API and legacy URLs, respectively.
+# GN_INDEX_URL points to the elasticsearch index.
+# SERVER_FORWARDHEADERSSTRATEGY: FRAMEWORK configures header forwarding.
+# JAVA_OPTS: -Dfile.encoding=UTF-8 sets the Java file encoding.
   ogc-api-records-service:
     image: geonetwork/gn-cloud-ogc-api-records-service:4.4.3-0
     environment:
@@ -204,10 +234,23 @@ services:
     networks:
       - gn-network
 
+# The elasticsearch service is used to provide a search and analytics engine for GeoNetwork
+# The image: elasticsearch:8.14.3 line specifies the Elasticsearch image to use.
+# ports: - 9200:9200 exposes the elasticsearch port.
+# ulimits configures system limits for Elasticsearch, which are important for performance.
+# healthcheck ensures that Elasticsearch is running and healthy.
+# environment sets various Elasticsearch configuration options:
+# cluster.name=docker-cluster defines the cluster name.
+# bootstrap.memory_lock=true locks Elasticsearch's memory to prevent swapping.
+# discovery.type=single-node configures Elasticsearch to run in single-node mode.
+# ES_JAVA_OPTS=-Xms2g -Xmx2g sets the Java heap size.
+# xpack.security.enabled=false and xpack.security.enrollment.enabled=false disables Elasticsearch security features, which is common in development environments.
+# volumes: - esdata:/usr/share/elasticsearch/data mounts the esdata volume to /usr/share/elasticsearch/data, ensuring that the Elasticsearch data is persisted.
+# The ogc-api-records-service and kibana services depend on elasticsearch.
   elasticsearch:
     image: elasticsearch:8.14.3
-    ports:
-      - 9200:9200
+#    ports:
+#      - 9200:9200
     ulimits:
       memlock:
         soft: -1
@@ -232,12 +275,25 @@ services:
       - esdata:/usr/share/elasticsearch/data
     networks:
       - gn-network
+    labels:  
+      - "traefik.enable=true"
+      - "traefik.http.routers.elasticsearch.rule=PathPrefix(`/elasticsearch`)"
+      - "traefik.http.routers.elasticsearch.entrypoints=websecure"
+      - "traefik.http.services.elasticsearch.loadbalancer.server.port=9200"      
 
+# Kibana is a visualization and exploration tool designed to work with Elasticsearch. It allows you to create dashboards, charts, and graphs 
+# to visualize and analyze the data stored in Elasticsearch.
+# ELASTICSEARCH_URL: http://elasticsearch:9200 tells Kibana where to find Elasticsearch.
+# SERVER_BASEPATH: /geonetwork/dashboards sets the base path for Kibana's interface.
+# SERVER_REWRITEBASEPATH: "false" prevents Kibana from rewriting the base path.
+# XPACK_MONITORING_UI_CONTAINER_ELASTICSEARCH_ENABLED: "true" enables monitoring.
+# depends_on: elasticsearch: condition: service_healthy ensures that Kibana starts only after Elasticsearch is running.
+# Traefik is configured to route traffic to kibana from the /geonetwork/dashboards path. This allows the user to access Kibana from the browser.
   kibana:
     image: kibana:8.14.3
     environment:
       SERVER_NAME: "kibana"
-      ELASTICSEARCH_URL: http://elasticsearch:9200 #use elasticsearch internal name
+      ELASTICSEARCH_URL: https://vigilant-goggles-7p5wwqrxw9vfx554.github.dev-9200/elasticsearch  
       SERVER_BASEPATH: /geonetwork/dashboards
       SERVER_REWRITEBASEPATH: "false"
       XPACK_MONITORING_UI_CONTAINER_ELASTICSEARCH_ENABLED: "true"
@@ -246,7 +302,8 @@ services:
         condition: service_healthy
     networks:
       - gn-network
- 
+
+# the above services use several persistent volumes, these are defined below 
 volumes:
   geonetwork:
   esdata:
@@ -254,6 +311,8 @@ volumes:
   pglog:
   traefiklog:
 
+# every service is on the gn-network, and the external web should be defined with docker create network web before the first time you create the
+# docker-compose with the up -d. Note that docker-compose adds gn_ in front of the gn-network so in reality the network name is gn_gn-network. 
 networks:
   gn-network:
     driver: bridge
