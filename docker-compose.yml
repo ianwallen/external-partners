@@ -16,8 +16,6 @@ x-geonetwork-environment:
     -Dorg.apache.activemq.broker.BrokerService.tempUsage.limit=2gb
     -Dcom.sun.management.jmxremote=false
 
-# -Des.url=http://elasticsearch:9200
-
   GN_CONFIG_PROPERTIES: >-
     -Dgeonetwork.dir=/catalogue-data
     -Dgeonetwork.formatter.dir=/catalogue-data/data/formatter
@@ -29,19 +27,19 @@ x-geonetwork-environment:
     -Des.protocol=http
     -Des.port=9200
     -Des.protocol=http
-    -Des.url=https://vigilant-goggles-7p5wwqrxw9vfx554-9200.app.github.dev/ 
+    -Des.url=http://elasticsearch:9200
     -Des.username=
     -Des.password=
-    -Dgeonetwork.ESFeaturesProxy.targetUri=http://vigilant-goggles-7p5wwqrxw9vfx554-9200.app.github.dev/gn-features/{_}
-    -Dgeonetwork.HttpDashboardProxy.targetUri=https://vigilant-goggles-7p5wwqrxw9vfx554-5601.app.github.dev/kibana
-    -Dgeonetwork.MicroServicesProxy.targetUri=https://vigilant-goggles-7p5wwqrxw9vfx554-8080/ogc-api-records-service 
+    -Dgeonetwork.ESFeaturesProxy.targetUri=http://ogc-api-records-service:8080/gn-features/{_} # use the ogc-api-records-service internal name
+    -Dgeonetwork.HttpDashboardProxy.targetUri=http://kibana:5601/geonetwork/dashboards # use kibana internal name
+    -Dgeonetwork.MicroServicesProxy.targetUri=http://ogc-api-records-service:8080/ogc-api-records-service #use ogc api records service internal name
   GEONETWORK_DB_TYPE: postgres
   GEONETWORK_DB_HOST: database
   GEONETWORK_DB_PORT: 5432
   GEONETWORK_DB_NAME: geonetwork
   GEONETWORK_DB_USERNAME: geonetwork
   GEONETWORK_DB_PASSWORD: geonetwork
-  VIRTUAL_HOST: https://vigilant-goggles-7p5wwqrxw9vfx554-8080
+  VIRTUAL_HOST: localhost 
 
 x-service-geonetwork:
   &default-service-geonetwork
@@ -121,7 +119,6 @@ services:
       - gn-network
       - web
     labels:
-      - "traefik.http.routers.research-portal.rule=PathPrefix(`/portal`)"
       - "traefik.http.routers.research-portal.entrypoints=websecure"
       - "traefik.http.routers.research-portal.service=research-portal-service"
       - "traefik.http.services.research-portal-service.loadbalancer.server.port=8082" # Changed to 8082
@@ -155,27 +152,13 @@ services:
     networks:
       - gn-network
 
-# change the GN_AUTH_KEYCLOAK_URL, GN_AUTH_KEYCLOAK_REDIRECT_URI, GN_AUTH_KEYCLOAK_CLIENT_SECRET and GN_AUTH_KEYCLOAK_LOGOUT_REDIRECT_URI
   geonetwork:
     <<: *default-service-geonetwork
     environment:
       <<: *default-geonetwork-environment
-      HARVESTER_SCHEDULER_ENABLED: "true"
-      HARVESTER_REFRESH_INTERVAL_MINUTES: 2
-      GN_AUTH_KEYCLOAK_ENABLED: "true"
-      GN_AUTH_KEYCLOAK_FORCE: "true"
-      GN_AUTH_KEYCLOAK_HIDE_LOGIN_FORM: "false"
-      GN_AUTH_KEYCLOAK_CLIENT_ID: "geonetwork"
-      GN_AUTH_KEYCLOAK_REALM: "master"
-      GN_AUTH_KEYCLOAK_URL: "https://vigilant-goggles-7p5wwqrxw9vfx554-8085.app.github.dev/realms/master/geonetwork/protocol/openid-connect/auth/"
-      GN_AUTH_KEYCLOAK_REDIRECT_URI: "https://vigilant-goggles-7p5wwqrxw9vfx554-8080.app.github.dev/*"
-      GN_AUTH_KEYCLOAK_CLIENT_SECRET: "BtPnEGGX3fH8eTcSBhY41IwJvfxo8i9s"
-      GN_AUTH_KEYCLOAK_ROLE_CLAIM: "roles"
-      GN_AUTH_KEYCLOAK_GROUPS_CLAIM: "groups"
-      GN_AUTH_KEYCLOAK_USERNAME_CLAIM: "preferred_username"
-      GN_AUTH_KEYCLOAK_EMAIL_CLAIM: "email"
-      GN_AUTH_KEYCLOAK_LOGOUT_REDIRECT_URI: "https://vigilant-goggles-7p5wwqrxw9vfx554-8085.app.github.dev/realms/master/protocol/openid-connect/logout"
-
+      HARVESTER_SCHEDULER_ENABLED: "false"
+      HARVESTER_REFRESH_INTERVAL_MINUTES: 10
+      ACTIVEMQ_TEMP_USAGE_LIMIT: "10GB"
     ports:
       - 8080:8080
     networks:
@@ -205,9 +188,9 @@ services:
       SPRING_DATASOURCE_URL: jdbc:postgresql://database:5432/geonetwork
       SPRING_DATASOURCE_USERNAME: geonetwork
       SPRING_DATASOURCE_PASSWORD: geonetwork
-      GN_BASEURL: https://vigilant-goggles-7p5wwqrxw9vfx554-8080.app.github.dev/geonetwork/api
-      GN_LEGACY_URL: http//vigilant-goggles-7p5wwqrxw9vfx554-8080.app.github.dev/geonetwork
-      GN_INDEX_URL: https://vigilant-goggles-7p5wwqrxw9vfx554-8080.app.github.dev/geonetwork/api-9200.app.github.dev
+      GN_BASEURL: http://geonetwork:8080/geonetwork/api #use geonetwork internal name
+      GN_LEGACY_URL: http://geonetwork:8080/geonetwork #use geonetwork internal name
+      GN_INDEX_URL: http://elasticsearch:9200 #use elasticsearch internal name
       SERVER_FORWARDHEADERSSTRATEGY: FRAMEWORK
       JAVA_OPTS: -Dfile.encoding=UTF-8
     healthcheck:
@@ -233,7 +216,7 @@ services:
         soft: 65536
         hard: 65536
     healthcheck:
-      test: ["CMD", "curl", "-s", "-XGET", "https://vigilant-goggles-7p5wwqrxw9vfx554-9200.app.github.dev/_cluster/health?wait_for_status=yellow&timeout=5s"]
+      test: ["CMD", "curl", "-s", "-XGET", "http://vigilant-goggles-7p5wwqrxw9vfx554-9200.app.github.dev/_cluster/health?wait_for_status=yellow&timeout=5s"]
       interval: 5s
       timeout: 5s
       retries: 10
@@ -242,7 +225,7 @@ services:
       - cluster.name=docker-cluster
       - bootstrap.memory_lock=true
       - discovery.type=single-node
-      - "ES_JAVA_OPTS=-Xms512m -Xmx512m"
+      - "ES_JAVA_OPTS=-Xms2g -Xmx2g"
       - xpack.security.enabled=false
       - xpack.security.enrollment.enabled=false
     volumes:
@@ -254,7 +237,7 @@ services:
     image: kibana:8.14.3
     environment:
       SERVER_NAME: "kibana"
-      ELASTICSEARCH_URL: https://vigilant-goggles-7p5wwqrxw9vfx554-9200.app.github.dev/
+      ELASTICSEARCH_URL: http://elasticsearch:9200 #use elasticsearch internal name
       SERVER_BASEPATH: /geonetwork/dashboards
       SERVER_REWRITEBASEPATH: "false"
       XPACK_MONITORING_UI_CONTAINER_ELASTICSEARCH_ENABLED: "true"
@@ -263,50 +246,13 @@ services:
         condition: service_healthy
     networks:
       - gn-network
-
-  db:
-    image: postgres:13
-    environment:
-      POSTGRES_USER: keycloak
-      POSTGRES_PASSWORD: password
-      POSTGRES_DB: keycloak
-    volumes:
-      - db-data:/var/lib/postgresql/data
-    ports:
-      - 5432:5432 # optional, only if you want to access the db directly from your host.
-    networks:
-      - gn-network
-
-  keycloak:
-    image: quay.io/keycloak/keycloak:latest
-    command: start-dev --import-realm
-    environment:
-      KEYCLOAK_ADMIN: admin
-      KEYCLOAK_ADMIN_THEME: keycloak
-      KEYCLOAK_ADMIN_PASSWORD: admin
-      KC_DB: postgres
-      KC_DB_URL: jdbc:postgresql://db:5432/keycloak
-      KC_DB_USERNAME: keycloak
-      KC_DB_PASSWORD: password
-      KC_HTTP_PORT: 8085
-      KC_HOSTNAME: https://vigilant-goggles-7p5wwqrxw9vfx554-8085.app.github.dev/
-      QUARKUS_DATASOURCE_JDBC_POOL_SIZE: 20
-    ports:
-      - 8085:8085
-    depends_on:
-      - db
-    volumes:
-      - ./realm-export.json:/opt/keycloak/data/import/realm-export.json # optional, for realm imports.
-    networks:
-      - gn-network
-
+ 
 volumes:
   geonetwork:
   esdata:
   pgdata:
   pglog:
   traefiklog:
-  db-data:
 
 networks:
   gn-network:
