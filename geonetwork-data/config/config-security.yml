@@ -1,13 +1,14 @@
-keycloak:
-  enabled: true
-  force: true
-  hideLoginForm: true
-  clientId: "geonetwork"
-  clientSecret: "Wjf73ttbLrNhj3SiS7Fp9jd2oWx91XLe"
-  realm: "master"  # Change if using a custom realm
-  authServerUrl: "https://vigilant-goggles-7p5wwqrxw9vfx554-8085.app.github.dev/realms/master/protocol/openid-connect/auth"
-  redirectUri: "https://vigilant-goggles-7p5wwqrxw9vfx554-8080.app.github.dev/*"
-  roleClaim: "roles"
-  groupsClaim: "groups"
-  usernameClaim: "preferred_username"
-  emailClaim: "email"
+# GeoNetwork Security Configuration for OIDC (Keycloak)
+security:
+  oauth2:
+    enabled: true
+    client:
+      clientId: geonetwork
+      clientSecret: PnqzBJGlWSID2co9LTpdaChtBQs7U3fm
+      accessTokenUri: https://ominous-acorn-jq79964gg7gc55rj-8085.app.github.dev/realms/IDP/protocol/openid-connect/token
+      userAuthorizationUri: https://ominous-acorn-jq79964gg7gc55rj-8085.app.github.dev/realms/IDP/protocol/openid-connect/auth
+      scope: openid profile email
+    resource:
+      userInfoUri: https://ominous-acorn-jq79964gg7gc55rj-8085.app.github.dev/realms/IDP/protocol/openid-connect/userinfo
+    loginUri: https://ominous-acorn-jq79964gg7gc55rj-8085.app.github.dev/realms/IDP/protocol/openid-connect/auth
+    logoutUri: https://ominous-acorn-jq79964gg7gc55rj-8085.app.github.dev/realms/IDP/protocol/openid-connect/logout

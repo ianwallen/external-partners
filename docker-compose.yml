@@ -171,6 +171,14 @@ services:
       HARVESTER_SCHEDULER_ENABLED: "false"
       HARVESTER_REFRESH_INTERVAL_MINUTES: 10
       ACTIVEMQ_TEMP_USAGE_LIMIT: "10GB"
+      KEYCLOAK_REALM: IDP
+      KEYCLOAK_AUTH_SERVER_URL: https://ominous-acorn-jq79964gg7gc55rj-8085.app.github.dev/auth 
+      KEYCLOAK_SSL_REQUIRED: false
+      KEYCLOAK_RESOURCE: geonetwork 
+      KEYCLOAK_SECRET: PnqzBJGlWSID2co9LTpdaChtBQs7U3fm
+      KEYCLOAK_CONFIDENTIAL_PORT: 8443
+      KEYCLOAK_DISABLE_TRUST_MANAGER: false
+      KEYCLOAK_PUBLIC_CLIENT: false 
     ports:
       - 8080:8080
     networks:
