@@ -26,6 +26,7 @@ x-geonetwork-environment:
     -Dgeonetwork.indexConfig.dir=/opt/geonetwork/WEB-INF/data/config/index
     -Dgeonetwork.schemapublication.dir=/opt/geonetwork/WEB-INF/data/resources/schemapublication
     -Dgeonetwork.htmlcache.dir=/opt/geonetwork/WEB-INF/data/resources/htmlcache
+    -Dgeonetwork.https.url=https://vigilant-goggles-7p5wwqrxw9vfx554-8080.app.github.dev
     -Des.host=elasticsearch
     -Des.protocol=http
     -Des.port=9200
@@ -41,7 +42,7 @@ x-geonetwork-environment:
   GEONETWORK_DB_NAME: geonetwork
   GEONETWORK_DB_USERNAME: geonetwork
   GEONETWORK_DB_PASSWORD: geonetwork
-  VIRTUAL_HOST: localhost 
+ #  VIRTUAL_HOST: localhost 
  
 # geonetwork web traffic settings
 x-service-geonetwork:
@@ -169,9 +170,9 @@ services:
       OPENIDCONNECT_IDTOKENROLELOCATION: resource_access.geonetwork.roles
       OPENIDCONNECT_ROLECONVERTER: "GeonetworkAdmin=Administrator,GeonetworkEditor=Editor"
 
-      GEONETWORK_SERVER_URL: "https://vigilant-goggles-7p5wwqrxw9vfx554-8080.app.github.dev"
-      GEONETWORK_BASE_URL: "https://vigilant-goggles-7p5wwqrxw9vfx554-8080.app.github.dev"
-      GEONETWORK_EXTERNAL_URL: "https://vigilant-goggles-7p5wwqrxw9vfx554-8080.app.github.dev"
+      GEONETWORK_SERVER_URL: "https://vigilant-goggles-7p5wwqrxw9vfx554-8080.app.github.dev/geonetwork"
+      GEONETWORK_BASE_URL: "https://vigilant-goggles-7p5wwqrxw9vfx554-8080.app.github.dev/geonetwork"
+      GEONETWORK_EXTERNAL_URL: "https://vigilant-goggles-7p5wwqrxw9vfx554-8080.app.github.dev/geonetwork"
 
     ports:
       - 8080:8080
