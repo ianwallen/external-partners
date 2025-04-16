@@ -3,13 +3,13 @@ http {
 
     server {
         listen 80;
-        server_name laughing-potato-q6w9rqrvr7jfvv9.github.dev-80.app.github.dev laughing-potato-q6w9rqrvr7jfvv9.github.dev-8080.app.github.dev laughing-potato-q6w9rqrvr7jfvv9.github.dev-8085.app.github.dev;
+        server_name ${BASE_HOSTNAME}.github.dev-80.app.github.dev ${BASE_HOSTNAME}.github.dev-8080.app.github.dev ${BASE_HOSTNAME}.github.dev-8085.app.github.dev;
         return 301 https://$host$request_uri;
     }
     
     server {
         listen 443 ssl http2;
-        server_name laughing-potato-q6w9rqrvr7jfvv9.github.dev-443.app.github.dev;
+        server_name ${BASE_HOSTNAME}.github.dev-443.app.github.dev;
 
         port_in_redirect off;
         absolute_redirect off;
